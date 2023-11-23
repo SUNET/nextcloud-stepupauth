@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+  <id>stepupauth</id>
+  <name>Step Up Auth</name>
+  <summary>Trigger Two Factor Auth</summary>
+  <description>The Step Auth App allows SSO accounts to validate a second factor.</description>
+  <version>0.1.0</version>
+  <licence>agpl</licence>
+  <author>Micke Nordin</author>
+  <category>security</category>
+  <website>https://github.com/SUNET/nextcloud-stepupauth</website>
+  <bugs>https://github.com/SUNET/nextcloud-stepupauth/issues</bugs>
+  <repository>https://github.com/SUNET/nextcloud-stepupauth</repository>
+  <namespace>StepUpAuth</namespace>
+  <dependencies>
+    <nextcloud min-version="25" max-version="29" />
+  </dependencies>
+</info>
