@@ -62,6 +62,8 @@ class UserLoggingIn implements IEventListener
     }
     $this->user = $this->userManager->get($event->getUser()->getUID());
     $this->logger->debug('StepUpAuth UserLoggedInEvent called', ['app' => 'stepupauth']);
-    $this->twoFactorManager->prepareTwoFactorLogin($this->user, false);
+    if($this->user->getBackend()->getBackendName() != 'Database') {
+      $this->twoFactorManager->prepareTwoFactorLogin($this->user, false);
+    }
   }
 }
