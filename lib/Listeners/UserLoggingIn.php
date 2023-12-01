@@ -24,14 +24,13 @@ declare(strict_types=1);
  */
 
 
-namespace OCA\StepUpAuth\Events;
+namespace OCA\StepUpAuth\Listeners;
 
 use OC\Authentication\TwoFactorAuth\Manager;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
-use OCP\IUserManager;
-use OCP\User\Events\UserLoggedInEvent;
+use OCP\User\Events\PostLoginEvent;
 use Psr\Log\LoggerInterface;
 
 
@@ -42,10 +41,8 @@ use Psr\Log\LoggerInterface;
  */
 class UserLoggingIn implements IEventListener
 {
-  private IUser $user;
   public function __construct(
     private Manager $twoFactorManager,
-    private IUserManager $userManager,
     private LoggerInterface $logger
   ) {
   }
@@ -56,14 +53,19 @@ class UserLoggingIn implements IEventListener
    */
   public function handle(Event $event): void
   {
-    if (!$event instanceof UserLoggedInEvent) {
-      $this->logger->debug('StepUpAuth Not UserLoggedInEvent', ['app' => 'stepupauth']);
+    if (!$event instanceof PostLoginEvent) {
       return;
     }
-    $this->user = $this->userManager->get($event->getUser()->getUID());
-    $this->logger->debug('StepUpAuth UserLoggedInEvent called', ['app' => 'stepupauth']);
-    if($this->user->getBackend()->getBackendName() != 'Database') {
-      $this->twoFactorManager->prepareTwoFactorLogin($this->user, false);
+    /**
+     * @var IUser $user
+     */
+    $user = $event->getUser();
+    $this->logger->debug('StepUpAuth UserLoggin listener called', ['app' => 'stepupauth']);
+    $backend = $user->getBackend()->getBackendName();
+    if($backend != 'Database') {
+      $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
+      $this->twoFactorManager->prepareTwoFactorLogin($user, false);
+      $this->logger->debug('StepUpAuth finished', ['app' => 'stepupauth']);
     }
   }
 }

@@ -26,13 +26,12 @@ declare(strict_types=1);
 
 namespace OCA\StepUpAuth\AppInfo;
 
-use OCA\StepUpAuth\Events\UserLoggingIn;
+use OCA\StepUpAuth\Listeners\UserLoggingIn;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\User\Events\UserLoggedInEvent;
-use Psr\Log\LoggerInterface;
+use OCP\User\Events\PostLoginEvent;
 use Throwable;
 
 
@@ -43,7 +42,6 @@ use Throwable;
  */
 class Application extends App implements IBootstrap
 {
-  private LoggerInterface $logger;
   public function __construct()
   {
     parent::__construct('stepupauth');
@@ -55,7 +53,7 @@ class Application extends App implements IBootstrap
    */
   public function register(IRegistrationContext $context): void
   {
-    $context->registerEventListener(UserLoggedInEvent::class, UserLoggingIn::class);
+    $context->registerEventListener(PostLoginEvent::class, UserLoggingIn::class);
   }
   /**
    * @param IBootContext $context
@@ -64,7 +62,5 @@ class Application extends App implements IBootstrap
    */
   public function boot(IBootContext $context): void
   {
-    $this->logger = $context->getServerContainer()->get(LoggerInterface::class);
-    $this->logger->debug('StepUpAuth Booted', ['app' => 'stepupauth']);
   }
 }
