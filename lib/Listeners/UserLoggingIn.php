@@ -30,7 +30,7 @@ use OC\Authentication\TwoFactorAuth\Manager;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
-use OCP\User\Events\PostLoginEvent;
+use OCP\User\Events\UserLoggedInEvent;
 use Psr\Log\LoggerInterface;
 
 
@@ -53,7 +53,7 @@ class UserLoggingIn implements IEventListener
    */
   public function handle(Event $event): void
   {
-    if (!$event instanceof PostLoginEvent) {
+    if (!$event instanceof UserLoggedInEvent) {
       return;
     }
     /**

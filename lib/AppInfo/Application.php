@@ -31,7 +31,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\User\Events\PostLoginEvent;
+use OCP\User\Events\UserLoggedInEvent;
 use Throwable;
 
 
@@ -53,7 +53,7 @@ class Application extends App implements IBootstrap
    */
   public function register(IRegistrationContext $context): void
   {
-    $context->registerEventListener(PostLoginEvent::class, UserLoggingIn::class);
+    $context->registerEventListener(UserLoggedInEvent::class, UserLoggingIn::class);
   }
   /**
    * @param IBootContext $context
