@@ -26,10 +26,10 @@ declare(strict_types=1);
 
 namespace OCA\StepUpAuth\Listeners;
 
-use OC\Authentication\TwoFactorAuth\Manager;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUser;
+use OCP\ISession;
 use OCP\User\Events\UserLoggedInEvent;
 use Psr\Log\LoggerInterface;
 
@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
 class UserLoggingIn implements IEventListener
 {
   public function __construct(
-    private Manager $twoFactorManager,
+    private ISession $session,
     private LoggerInterface $logger
   ) {
   }
@@ -60,12 +60,9 @@ class UserLoggingIn implements IEventListener
      * @var IUser $user
      */
     $user = $event->getUser();
-    $this->logger->debug('StepUpAuth UserLoggin listener called', ['app' => 'stepupauth']);
-    $backend = $user->getBackend()->getBackendName();
-    if($backend != 'Database') {
-      $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
-      $this->twoFactorManager->prepareTwoFactorLogin($user, false);
-      $this->logger->debug('StepUpAuth finished', ['app' => 'stepupauth']);
-    }
+    $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
+    $this->session->set('two_factor_auth_uid', $user->getUID());
+    $this->session->set('two_factor_remember_login', true);
+    $this->logger->debug('StepUpAuth finished', ['app' => 'stepupauth']);
   }
 }
