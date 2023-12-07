@@ -1,6 +1,12 @@
-# Step up authentication
+# Step up authentication  	🚀 🔒 
 
-The Step Up Authenticator allows you to trigger a second factor authentication for SSO accounts.
+The Step Up Authentication app allows you to trigger a second factor authentication for Single Sign On (SSO)  accounts.
+
+Accounts created in Nextcloud with a SSO provider (saml, ldap, global site selector) can not currently use native Nextcloud Multi Factor Authentication (MFA). Nextcloud expects Identity Providers (IdP) to do MFA prior to logging in to Nextcloud. This is confusing to users who can still see the settings for MFA in their security settings and it is not allways feasable for IdPs to implement MFA. Instead this app allows administrators to enable users to do step up authentication in Nextcloud, that is, provide a higher level of assurance of identity within Nextcloud, than what is provided by the IdP.
+
+The only thing that this app does is to provide the same behaviour for SSO accounts as for local accounts. That means that you can configure groups in which users are required to have (or be excluded from having) MFA configured for their account. Users who are required to have MFA enabled, but have not yet configured a provided, will be prompted upon first login after requirement is enabled. The users can also voluntarily enable and disable MFA providers on their own volition if no external requirements are enforced. The documentation for MFA in Nextcloud is available here:
+
+* https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/two_factor-auth.html
 
 ## Testing status
 These uses-cases has been manually tested with 0.2.0 version of the app
