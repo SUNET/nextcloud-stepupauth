@@ -71,4 +71,4 @@ Combinations:
 | 19         | Windows| Rclone     |
 
  
-Operating systems and client combinations actually tested are mentioned in the column "Actual behaviour", we expect to test more combinations with time.
+Operating systems and client combinations actually tested are mentioned in the column "Actual behaviour", we expect to test more combinations with time, see [#1](https://github.com/SUNET/nextcloud-stepupauth/issues/1).
