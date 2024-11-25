@@ -1,12 +1,13 @@
 app_name=stepupauth
 
+get_version = $(shell  grep /version appinfo/info.xml | sed 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/')
 cert_dir=$(HOME)/.nextcloud/certificates
 project_dir=$(CURDIR)/../$(app_name)
 build_dir=$(CURDIR)/build/artifacts
 source_dir=$(build_dir)/source
 sign_dir=$(build_dir)/sign
 package_name=$(app_name)
-version+=0.2.0
+version := $(call get_version)
 
 all: appstore
 

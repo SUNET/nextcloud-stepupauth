@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace OCA\StepUpAuth\AppInfo;
 
-use OCA\StepUpAuth\Listeners\UserLoggingIn;
+use OCA\StepUpAuth\Listeners\UserLoggedIn;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -53,7 +53,7 @@ class Application extends App implements IBootstrap
    */
   public function register(IRegistrationContext $context): void
   {
-    $context->registerEventListener(UserLoggedInEvent::class, UserLoggingIn::class);
+    $context->registerEventListener(UserLoggedInEvent::class, UserLoggedIn::class);
   }
   /**
    * @param IBootContext $context
