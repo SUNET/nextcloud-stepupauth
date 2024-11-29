@@ -62,14 +62,16 @@ class UserLoggedIn implements IEventListener
      * @var IUser $user
      */
     $user = $event->getUser();
-    $mfaVerified = '0';
-    $mfa_key = 'urn:oid:2.5.4.2'; // TODO: get from config
-    $attr = $this->session->get('user_saml.samlUserData');
-    if (isset($mfa_key) && isset($attr[$mfa_key])) {
-      $mfaVerified = $attr[$mfa_key][0];
-    }
-    if ($mfaVerified == '1') {
-      return;
+    $userbackend = $user->getBackend();
+    /**
+     * @var IUserBackend $userbackend
+     */
+    if ($userbackend->getBackendName() == 'user_saml') {
+      $formatted = $userbackend->getUserData();
+      $mfaVerified = $formatted['formatted']['mfaVerified'];
+      if ($mfaVerified == '1') {
+        return;
+      }
     }
     $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
     $this->session->set('two_factor_auth_uid', $user->getUID());
