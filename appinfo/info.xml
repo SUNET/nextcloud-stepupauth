@@ -5,7 +5,7 @@
   <name>Step Up Auth</name>
   <summary>Trigger Two Factor Auth</summary>
   <description>The Step Auth App allows SSO accounts to validate a second factor.</description>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <licence>agpl</licence>
   <author>Micke Nordin</author>
   <category>security</category>
