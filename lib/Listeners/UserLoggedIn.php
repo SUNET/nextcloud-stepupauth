@@ -46,8 +46,7 @@ class UserLoggedIn implements IEventListener
     private ISession $session,
     private LoggerInterface $logger,
     private IAppConfig $config
-  ) {
-  }
+  ) {}
 
 
   /**
@@ -67,10 +66,13 @@ class UserLoggedIn implements IEventListener
      * @var IUserBackend $userbackend
      */
     if ($userbackend->getBackendName() == 'user_saml') {
-      $formatted = $userbackend->getUserData();
-      $mfaVerified = $formatted['formatted']['mfaVerified'];
-      if ($mfaVerified == '1') {
-        return;
+      $userData = $this->session->get('user_saml.samlUserData');
+      if (!empty($userData)) {
+        $formatted = $userbackend->getUserData();
+        $mfaVerified = $formatted['formatted']['mfaVerified'];
+        if ($mfaVerified == '1') {
+          return;
+        }
       }
     }
     $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
