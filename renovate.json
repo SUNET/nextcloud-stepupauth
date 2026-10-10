@@ -1,4 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>SUNET/renovate-config:nextcloud-app"]
+  "extends": ["github>SUNET/renovate-config:nextcloud-app"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^Makefile$/"],
+      "matchStrings": [
+        "signing_image\\s*\\?=\\s*(?<depName>nextcloud):(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepNames": ["nextcloud"],
+      "allowedVersions": "/^35\\./"
+    }
+  ]
 }

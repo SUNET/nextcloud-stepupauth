@@ -8,6 +8,51 @@ The only thing that this app does is to provide the same behaviour for SSO accou
 
 * https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/two_factor-auth.html
 
+## Compatibility and dependencies
+
+Version 0.2.4 supports Nextcloud **25–35**. The app has no bundled PHP or JavaScript
+dependencies: Nextcloud supplies its public API and PSR logger. When `user_saml`
+is used, the app respects its mapped MFA value `1` and otherwise triggers the
+normal Nextcloud second-factor flow.
+
+## Development checks
+
+The isolated unit tests use Nextcloud's public API package without requiring an
+installed server. Development tools require PHP 8.3 or newer; this does not
+change the PHP requirements of the supported Nextcloud installations.
+
+```sh
+composer install
+composer run cs:fix
+composer run cs:check
+composer run test:unit
+composer audit
+make package
+```
+
+Only development tools use Composer. `vendor/`, tests, Composer metadata and
+build tooling are excluded from the release archive.
+
+## Releasing
+
+Keep the app version in `appinfo/info.xml`, the changelog and the release tag in
+sync. Version 0.2.4 uses tag `v0.2.4`.
+
+1. Run the development checks above and verify the SSO/MFA scenarios below on
+   the target Nextcloud version, including IdP-verified MFA and app-token access.
+2. On the host, with Docker available and `stepupauth.crt` and `stepupauth.key` in
+   `~/.nextcloud/certificates`, run `make release`. Use `cert_dir=/absolute/path`
+   to select another certificate directory. The signing image is pinned to
+   `nextcloud:35.0.1`; certificates are mounted read-only.
+3. Commit and tag the release on the host, then publish the **signed**
+   `build/artifacts/stepupauth-0.2.4.tar.gz` as a GitHub release asset.
+4. Submit the public archive URL and the base64 SHA-512 signature printed by
+   `make release` to the Nextcloud App Store. The binary archive signature is
+   also saved as `build/artifacts/stepupauth-0.2.4.tar.gz.sig`.
+
+`make package` creates an **unsigned** archive for inspection, not publication.
+Do not run it again after signing without re-running `make release`.
+
 ## Testing status
 These uses-cases has been manually tested with 0.2.0 version of the app
 | **Use-case**                                                                     | **Expected Environments**       | **Description**                                                                                                  | **Expected Behaviour**                                                                                                                                                                                                    | **Actual Behaviour (OS/Client combo tested)**|

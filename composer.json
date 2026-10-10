@@ -1,0 +1,33 @@
+{
+  "name": "sunet/stepupauth",
+  "description": "Step up authentication for Nextcloud SSO accounts",
+  "type": "project",
+  "license": "AGPL-3.0-or-later",
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "nextcloud/coding-standard": "^1.5",
+    "nextcloud/ocp": "^35.0",
+    "phpunit/phpunit": "^12.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "OCA\\StepUpAuth\\": "lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "OCA\\StepUpAuth\\Tests\\": "tests/",
+      "OCP\\": "vendor/nextcloud/ocp/OCP/"
+    }
+  },
+  "scripts": {
+    "cs:check": "php-cs-fixer fix --dry-run --diff",
+    "cs:fix": "php-cs-fixer fix",
+    "test:unit": "phpunit --configuration tests/phpunit.xml"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

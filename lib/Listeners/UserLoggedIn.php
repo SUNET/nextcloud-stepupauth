@@ -28,24 +28,19 @@ namespace OCA\StepUpAuth\Listeners;
 
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCP\IAppConfig;
-use OCP\IUser;
 use OCP\ISession;
 use OCP\User\Events\UserLoggedInEvent;
 use Psr\Log\LoggerInterface;
 
 
 /**
- * Class StepUpAuth
- *
- * @package OCA\StepUpAuth\Events
+ * @implements IEventListener<UserLoggedInEvent>
  */
 class UserLoggedIn implements IEventListener
 {
   public function __construct(
     private ISession $session,
-    private LoggerInterface $logger,
-    private IAppConfig $config
+    private LoggerInterface $logger
   ) {}
 
 
@@ -57,20 +52,14 @@ class UserLoggedIn implements IEventListener
     if (!$event instanceof UserLoggedInEvent) {
       return;
     }
-    /**
-     * @var IUser $user
-     */
     $user = $event->getUser();
     $userbackend = $user->getBackend();
-    /**
-     * @var IUserBackend $userbackend
-     */
-    if ($userbackend->getBackendName() == 'user_saml') {
+    if ($userbackend?->getBackendName() === 'user_saml') {
       $userData = $this->session->get('user_saml.samlUserData');
       if (!empty($userData)) {
         $formatted = $userbackend->getUserData();
-        $mfaVerified = $formatted['formatted']['mfaVerified'];
-        if ($mfaVerified == '1') {
+        $mfaVerified = $formatted['formatted']['mfaVerified'] ?? null;
+        if ($mfaVerified === '1') {
           return;
         }
       }
