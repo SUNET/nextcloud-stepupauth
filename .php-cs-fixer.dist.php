@@ -13,9 +13,6 @@ $config = new Config();
 $config->getFinder()
 	->in(__DIR__ . '/lib')
 	->in(__DIR__ . '/tests')
-	// Keep the established formatting of these application files.
-	->notPath('AppInfo/Application.php')
-	->notPath('Listeners/UserLoggedIn.php')
 	->append([__FILE__]);
 
 return $config;

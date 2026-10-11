@@ -23,7 +23,6 @@ declare(strict_types=1);
  *
  */
 
-
 namespace OCA\StepUpAuth\AppInfo;
 
 use OCA\StepUpAuth\Listeners\UserLoggedIn;
@@ -34,33 +33,27 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use OCP\User\Events\UserLoggedInEvent;
 use Throwable;
 
-
 /**
  * Class Application
  *
  * @package OCA\StepUpAuth\AppInfo
  */
-class Application extends App implements IBootstrap
-{
-  public function __construct()
-  {
-    parent::__construct('stepupauth');
-  }
+class Application extends App implements IBootstrap {
+	public function __construct() {
+		parent::__construct('stepupauth');
+	}
 
-
-  /**
-   * @param IRegistrationContext $context
-   */
-  public function register(IRegistrationContext $context): void
-  {
-    $context->registerEventListener(UserLoggedInEvent::class, UserLoggedIn::class);
-  }
-  /**
-   * @param IBootContext $context
-   *
-   * @throws Throwable
-   */
-  public function boot(IBootContext $context): void
-  {
-  }
+	/**
+	 * @param IRegistrationContext $context
+	 */
+	public function register(IRegistrationContext $context): void {
+		$context->registerEventListener(UserLoggedInEvent::class, UserLoggedIn::class);
+	}
+	/**
+	 * @param IBootContext $context
+	 *
+	 * @throws Throwable
+	 */
+	public function boot(IBootContext $context): void {
+	}
 }

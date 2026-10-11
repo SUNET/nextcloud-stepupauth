@@ -23,7 +23,6 @@ declare(strict_types=1);
  *
  */
 
-
 namespace OCA\StepUpAuth\Listeners;
 
 use OCP\EventDispatcher\Event;
@@ -32,41 +31,38 @@ use OCP\ISession;
 use OCP\User\Events\UserLoggedInEvent;
 use Psr\Log\LoggerInterface;
 
-
 /**
  * @implements IEventListener<UserLoggedInEvent>
  */
-class UserLoggedIn implements IEventListener
-{
-  public function __construct(
-    private ISession $session,
-    private LoggerInterface $logger
-  ) {}
+class UserLoggedIn implements IEventListener {
+	public function __construct(
+		private ISession $session,
+		private LoggerInterface $logger,
+	) {
+	}
 
-
-  /**
-   * @param Event $event
-   */
-  public function handle(Event $event): void
-  {
-    if (!$event instanceof UserLoggedInEvent) {
-      return;
-    }
-    $user = $event->getUser();
-    $userbackend = $user->getBackend();
-    if ($userbackend?->getBackendName() === 'user_saml') {
-      $userData = $this->session->get('user_saml.samlUserData');
-      if (!empty($userData)) {
-        $formatted = $userbackend->getUserData();
-        $mfaVerified = $formatted['formatted']['mfaVerified'] ?? null;
-        if ($mfaVerified === '1') {
-          return;
-        }
-      }
-    }
-    $this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
-    $this->session->set('two_factor_auth_uid', $user->getUID());
-    $this->session->set('two_factor_remember_login', true);
-    $this->logger->debug('StepUpAuth finished', ['app' => 'stepupauth']);
-  }
+	/**
+	 * @param Event $event
+	 */
+	public function handle(Event $event): void {
+		if (!$event instanceof UserLoggedInEvent) {
+			return;
+		}
+		$user = $event->getUser();
+		$userbackend = $user->getBackend();
+		if ($userbackend?->getBackendName() === 'user_saml') {
+			$userData = $this->session->get('user_saml.samlUserData');
+			if (!empty($userData)) {
+				$formatted = $userbackend->getUserData();
+				$mfaVerified = $formatted['formatted']['mfaVerified'] ?? null;
+				if ($mfaVerified === '1') {
+					return;
+				}
+			}
+		}
+		$this->logger->debug('StepUpAuth running', ['app' => 'stepupauth']);
+		$this->session->set('two_factor_auth_uid', $user->getUID());
+		$this->session->set('two_factor_remember_login', true);
+		$this->logger->debug('StepUpAuth finished', ['app' => 'stepupauth']);
+	}
 }
